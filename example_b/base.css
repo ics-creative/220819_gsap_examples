@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap");
+
+body {
+  background-color: black;
+  color: white;
+}
+
+* {
+  padding: 0;
+}
+
+body {
+  font-family: Cairo, sans-serif;
+  padding: 32px;
+}
+
+h1 {
+  line-height: 1.5;
+  font-weight: normal;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+section {
+  margin-bottom: 32px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.button {
+  display: inline-block;
+  color: currentColor;
+  text-decoration: none;
+  border: 1px solid white;
+  padding: 8px 16px;
+  line-height: 1;
+}
