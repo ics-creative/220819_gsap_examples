@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const tl = gsap.timeline({repeat: -1})
+
+      // 右側に2秒かけて移動するモーションを指定する
+      tl.add(gsap.to(".rect", { x: "50vw", rotate: 360, duration: 2 }));
+
+      tl.call(
+        () => {
+          // 0.1倍速再生にする(スローモーションとなる)
+          tl.timeScale(0.1);
+        },
+        null,
+        0.25
+      );
+      // 本来のタイムラインの0.50秒の地点まで到達したら
+      tl.call(
+        () => {
+          // 1.0倍速再生にする(通常再生速度となる)
+          tl.timeScale(1.0);
+        },
+        null,
+        0.5
+      );
+    })
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+    }
+
+    .rect {
+      width: 10vw;
+      height: 10vw;
+      display: block;
+      position: absolute;
+      background: white;
+      top: calc(50vh - 5vw);
+      left: 25vw;
+    }
+  </style>
+</head>
+
+<body>
+<div class="rect"></div>
+</body>
+</html>

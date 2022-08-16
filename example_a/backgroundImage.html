@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+
+      for (let i = 0; i < 100; i++) {
+        const rect = document.createElement("div");
+        rect.classList.add("rect");
+        document.querySelector(".container").appendChild(rect);
+      }
+
+      // 色変化
+      gsap.from(".text", {
+        backgroundImage: "linear-gradient(-90deg, #FF0000, #FF0000)",
+        duration: 5,
+        ease: "linear",
+        repeat: -1
+      });
+    })
+  </script>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      color: white;
+      background: #000;
+      height: 100%;
+      font-family: sans-serif;
+    }
+
+    .text {
+      display: inline-block;
+      font-size: 5em;
+      font-weight: bold;
+      background-image: linear-gradient(-90deg, #FF00FF, #FFFF00);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <div class="text">
+    <span>Hello World</span>
+  </div>
+</div>
+</body>
+</html>

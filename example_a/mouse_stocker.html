@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+
+      const circle = document.querySelector(".circle")
+      const pos = {x: window.innerWidth / 2, y: window.innerHeight / 2};
+      const mouse = {x: window.innerWidth / 2, y: window.innerHeight / 2};
+      const speed = 0.15;
+
+      const xSet = gsap.quickSetter(circle, "x", "px");
+      const ySet = gsap.quickSetter(circle, "y", "px");
+
+      window.addEventListener("mousemove", (event) => {
+        mouse.x = event.x;
+        mouse.y = event.y;
+      });
+
+      gsap.ticker.add(() => {
+
+        const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+
+        // いわゆるイージングの公式
+        pos.x += (mouse.x - pos.x) * dt;
+        pos.y += (mouse.y - pos.y) * dt;
+
+        xSet(pos.x);
+        ySet(pos.y);
+      });
+
+      document.querySelectorAll("button").forEach(element => {
+        element.addEventListener("mouseenter", () => {
+          gsap.to(circle, {
+            scale: 3,
+            duration: 0.3,
+            ease: "power4.out",
+          });
+        });
+        element.addEventListener("mouseleave", () => {
+          gsap.to(circle, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power4.out",
+          });
+        });
+      });
+    });
+
+  </script>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      color: white;
+      background: #000;
+      height: 100%;
+      font-family: sans-serif;
+    }
+
+    .circle {
+      width: 10px;
+      height: 10px;
+      display: block;
+      border: 3px solid white;
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="circle"></div>
+
+  <button>Hello</button>
+  <button>Hello</button>
+  <button>Hello</button>
+</div>
+</body>
+</html>
