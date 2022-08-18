@@ -9,27 +9,23 @@
         // デモ説明のためのデフォルト設定
         gsap.defaults({
           repeat: -1, // 無限に繰り返し
-          repeatDelay: 0.5, // 繰り返し時に0.5秒の待機
+          repeatDelay: 0.5, // 繰り返し時に0.5秒の待機,
+          ease: "power4.inOut",
         });
 
-        // 色変化
-        gsap.to(".example-bg-name .rect", {
-          backgroundColor: "red",
+        gsap.to(".example-repeat .rect", {
+          x: 200,
           duration: 2,
-        });
-        gsap.to(".example-bg-hex .rect", {
-          backgroundColor: "#990000",
-          duration: 2,
+          repeat: -1, // 無限に繰り返し
+          repeatDelay: 0.5, // 繰り返し時に0.5秒の待機,
         });
 
-        gsap.to(".example-bg-hsl .rect", {
-          backgroundColor: "hsl(0, 50%, 50%)",
+        gsap.to(".example-yoyo .rect", {
+          x: 200,
           duration: 2,
-        });
-
-        gsap.to(".example-border .rect", {
-          borderColor: "red",
-          duration: 2,
+          repeat: -1, // 無限に繰り返し
+          repeatDelay: 0.5, // 繰り返し時に0.5秒の待機,
+          yoyo: true, // 反転
         });
       });
     </script>
@@ -61,10 +57,6 @@
         background: white;
         position: relative;
       }
-      .example-border .rect {
-        background: black;
-        border: solid 3px white;
-      }
 
       h1 {
         font-size: 16px;
@@ -74,22 +66,13 @@
 
   <body>
     <div class="container">
-      <div class="example-bg-name">
-        <h1>background-color : "red"</h1>
+      <div class="example-repeat">
+        <h1>repeat</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-bg-hex">
-        <h1>background-color : "#990000"</h1>
-        <div class="rect"></div>
-      </div>
-      <div class="example-bg-hsl">
-        <h1>background-color : "hsl(0, 50%, 50%)"</h1>
-        <div class="rect"></div>
-      </div>
-
-      <div class="example-border">
-        <h1>border-color : "red"</h1>
+      <div class="example-yoyo">
+        <h1>repeat with yoyo</h1>
         <div class="rect"></div>
       </div>
     </div>

@@ -9,27 +9,23 @@
         // デモ説明のためのデフォルト設定
         gsap.defaults({
           repeat: -1, // 無限に繰り返し
-          repeatDelay: 0.5, // 繰り返し時に0.5秒の待機
+          repeatDelay: 1, // 繰り返し時に0.5秒の待機,
         });
 
-        // 色変化
-        gsap.to(".example-bg-name .rect", {
-          backgroundColor: "red",
-          duration: 2,
-        });
-        gsap.to(".example-bg-hex .rect", {
-          backgroundColor: "#990000",
-          duration: 2,
-        });
-
-        gsap.to(".example-bg-hsl .rect", {
-          backgroundColor: "hsl(0, 50%, 50%)",
-          duration: 2,
-        });
-
-        gsap.to(".example-border .rect", {
-          borderColor: "red",
-          duration: 2,
+        [
+          "power1",
+          "power2",
+          "power3",
+          "power4",
+          "sine",
+          "expo",
+          "linear",
+        ].forEach((ease) => {
+          gsap.to(`.example-${ease} .rect`, {
+            x: "75vw",
+            duration: 2,
+            ease: ease + ".out",
+          });
         });
       });
     </script>
@@ -49,21 +45,16 @@
 
       .container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
-        gap: 128px 32px;
+        gap: 16px 32px;
         margin: 32px;
       }
 
       .rect {
-        width: 10vw;
-        height: 10vw;
+        width: 5vw;
+        height: 5vw;
         display: block;
         background: white;
         position: relative;
-      }
-      .example-border .rect {
-        background: black;
-        border: solid 3px white;
       }
 
       h1 {
@@ -74,22 +65,33 @@
 
   <body>
     <div class="container">
-      <div class="example-bg-name">
-        <h1>background-color : "red"</h1>
+      <div class="example-linear">
+        <h1>linear</h1>
+        <div class="rect"></div>
+      </div>
+      <div class="example-sine">
+        <h1>sine.out</h1>
+        <div class="rect"></div>
+      </div>
+      <div class="example-power1">
+        <h1>power1.out</h1>
+        <div class="rect"></div>
+      </div>
+      <div class="example-power2">
+        <h1>power2.out</h1>
+        <div class="rect"></div>
+      </div>
+      <div class="example-power3">
+        <h1>power3.out</h1>
+        <div class="rect"></div>
+      </div>
+      <div class="example-power4">
+        <h1>power4.out</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-bg-hex">
-        <h1>background-color : "#990000"</h1>
-        <div class="rect"></div>
-      </div>
-      <div class="example-bg-hsl">
-        <h1>background-color : "hsl(0, 50%, 50%)"</h1>
-        <div class="rect"></div>
-      </div>
-
-      <div class="example-border">
-        <h1>border-color : "red"</h1>
+      <div class="example-expo">
+        <h1>expo.out</h1>
         <div class="rect"></div>
       </div>
     </div>

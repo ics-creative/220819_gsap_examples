@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // デモ説明のためのデフォルト設定。
+        // 実際のコードではこのデフォルト設定は無効にしましょう。
+        gsap.defaults({
+          repeat: -1, // 無限に繰り返し
+          repeatDelay: 0.5, // 繰り返し時に0.5秒の待機,
+          ease: "power4.inOut",
+        });
+
+        gsap.to(".example-x .rect", {
+          x: 40,
+          duration: 2,
+        });
+
+        gsap.to(".example-y .rect", {
+          y: 40,
+          duration: 2,
+        });
+
+        gsap.to(".example-rotate .rect", {
+          rotate: 360,
+          duration: 2,
+        });
+
+        gsap.to(".example-scale .rect", {
+          scale: 0.5,
+          duration: 2,
+        });
+
+        gsap.to(".example-skewX .rect", {
+          skewX: 30,
+          duration: 2,
+        });
+
+        gsap.to(".example-complex .rect", {
+          x: 100,
+          rotate: 360,
+          scale: 0.5,
+          duration: 2,
+        });
+
+        gsap.to(".example-origin .rect", {
+          rotate: 360,
+          transformOrigin: "bottom right",
+          duration: 2,
+        });
+      });
+    </script>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        color: white;
+        background: #000;
+        height: 100%;
+        font-family: sans-serif;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+        gap: 128px 32px;
+        margin: 32px;
+      }
+
+      .rect {
+        width: 10vw;
+        height: 10vw;
+        display: block;
+        background: white;
+        position: relative;
+      }
+
+      h1 {
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="example-x">
+        <h1>x</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-y">
+        <h1>y</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-rotate">
+        <h1>rotate</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-scale">
+        <h1>scale</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-skewX">
+        <h1>skewX</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-complex">
+        <h1>x & scale & rotate</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-origin">
+        <h1>transformOrigin</h1>
+        <div class="rect"></div>
+      </div>
+    </div>
+  </body>
+</html>

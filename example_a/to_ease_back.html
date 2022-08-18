@@ -9,27 +9,27 @@
         // デモ説明のためのデフォルト設定
         gsap.defaults({
           repeat: -1, // 無限に繰り返し
-          repeatDelay: 0.5, // 繰り返し時に0.5秒の待機
+          repeatDelay: 1, // 繰り返し時に0.5秒の待機,
         });
 
-        // 色変化
-        gsap.to(".example-bg-name .rect", {
-          backgroundColor: "red",
-          duration: 2,
-        });
-        gsap.to(".example-bg-hex .rect", {
-          backgroundColor: "#990000",
-          duration: 2,
+        ["elastic", "back", "bounce"].forEach((ease) => {
+          gsap.to(`.example-${ease} .rect`, {
+            x: "75vw",
+            duration: 2,
+            ease: ease + ".out",
+          });
         });
 
-        gsap.to(".example-bg-hsl .rect", {
-          backgroundColor: "hsl(0, 50%, 50%)",
+        gsap.to(`.example-backEx .rect`, {
+          x: "75vw",
           duration: 2,
+          ease: "back.out(4)",
         });
 
-        gsap.to(".example-border .rect", {
-          borderColor: "red",
+        gsap.to(`.example-elasticEx .rect`, {
+          x: "75vw",
           duration: 2,
+          ease: "elastic.out(1.2, 0.2)",
         });
       });
     </script>
@@ -49,21 +49,16 @@
 
       .container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
-        gap: 128px 32px;
+        gap: 16px 32px;
         margin: 32px;
       }
 
       .rect {
-        width: 10vw;
-        height: 10vw;
+        width: 5vw;
+        height: 5vw;
         display: block;
         background: white;
         position: relative;
-      }
-      .example-border .rect {
-        background: black;
-        border: solid 3px white;
       }
 
       h1 {
@@ -74,22 +69,28 @@
 
   <body>
     <div class="container">
-      <div class="example-bg-name">
-        <h1>background-color : "red"</h1>
+      <div class="example-back">
+        <h1>back.out</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-bg-hex">
-        <h1>background-color : "#990000"</h1>
-        <div class="rect"></div>
-      </div>
-      <div class="example-bg-hsl">
-        <h1>background-color : "hsl(0, 50%, 50%)"</h1>
+      <div class="example-backEx">
+        <h1>back.out(4)</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-border">
-        <h1>border-color : "red"</h1>
+      <div class="example-elastic">
+        <h1>elastic.out</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-elasticEx">
+        <h1>elastic.out(1.2, 0.2)</h1>
+        <div class="rect"></div>
+      </div>
+
+      <div class="example-bounce">
+        <h1>bounce.out</h1>
         <div class="rect"></div>
       </div>
     </div>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
+
+        document.querySelectorAll(".word").forEach((word) => {
+          tl.add(createChildTimeline(word), "-=90%");
+        });
+
+        function createChildTimeline(element) {
+          const elText = element.querySelector(".rect");
+          const tl = gsap
+            .timeline()
+            .from(element, {
+              y: 16,
+              opacity: 0,
+              duration: 0.75,
+              ease: "power4.out",
+            })
+            .set(elText, { opacity: 0 })
+            .to(
+              elText,
+              {
+                x: "105%",
+                duration: 1,
+                ease: "power4.out",
+              },
+              "-=50%",
+            );
+          return tl;
+        }
+      });
+    </script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+        color: white;
+        font-family: sans-serif;
+      }
+      .container {
+        position: absolute;
+        top: 50%;
+      }
+      span.word {
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        line-height: 1;
+        font-size: 4rem;
+      }
+      .rect {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: white;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <span class="word"
+        ><span class="rect"></span><span class="label">ICS MEDIA</span></span
+      >
+      <span class="word"
+        ><span class="rect"></span><span class="label">is</span></span
+      >
+      <span class="word"
+        ><span class="rect"></span><span class="label">build</span></span
+      >
+      <span class="word"
+        ><span class="rect"></span><span class="label">with</span></span
+      >
+      <span class="word"
+        ><span class="rect"></span><span class="label">Nuxt</span></span
+      >
+      <span class="word"
+        ><span class="rect"></span><span class="label">.</span></span
+      >
+    </div>
+  </body>
+</html>
