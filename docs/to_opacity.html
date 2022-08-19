@@ -3,33 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         // デモ説明のためのデフォルト設定
         gsap.defaults({
           repeat: -1, // 無限に繰り返し
           repeatDelay: 1, // 繰り返し時に0.5秒の待機,
+          yoyo: true,
         });
 
-        ["elastic", "back", "bounce"].forEach((ease) => {
-          gsap.to(`.example-${ease} .rect`, {
-            x: "75vw",
-            duration: 2,
-            ease: ease + ".out",
-          });
-        });
-
-        gsap.to(`.example-backEx .rect`, {
-          x: "75vw",
+        gsap.to(".example-opacity .rect", {
+          opacity: 0,
           duration: 2,
-          ease: "back.out(4)",
         });
 
-        gsap.to(`.example-elasticEx .rect`, {
-          x: "75vw",
+        gsap.to(".example-alpha .rect", {
+          alpha: 0,
           duration: 2,
-          ease: "elastic.out(1.2, 0.2)",
+        });
+
+        gsap.to(".example-autoAlpha .rect", {
+          autoAlpha: 0,
+          duration: 2,
         });
       });
     </script>
@@ -49,13 +45,14 @@
 
       .container {
         display: grid;
-        gap: 16px 32px;
+        grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+        gap: 128px 32px;
         margin: 32px;
       }
 
       .rect {
-        width: 5vw;
-        height: 5vw;
+        width: 10vw;
+        height: 10vw;
         display: block;
         background: white;
         position: relative;
@@ -69,28 +66,18 @@
 
   <body>
     <div class="container">
-      <div class="example-back">
-        <h1>back.out</h1>
+      <div class="example-opacity">
+        <h1>opacity</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-backEx">
-        <h1>back.out(4)</h1>
+      <div class="example-alpha">
+        <h1>alpha</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-elastic">
-        <h1>elastic.out</h1>
-        <div class="rect"></div>
-      </div>
-
-      <div class="example-elasticEx">
-        <h1>elastic.out(1.2, 0.2)</h1>
-        <div class="rect"></div>
-      </div>
-
-      <div class="example-bounce">
-        <h1>bounce.out</h1>
+      <div class="example-autoAlpha">
+        <h1>autoAlpha</h1>
         <div class="rect"></div>
       </div>
     </div>
