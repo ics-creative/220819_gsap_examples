@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+
+  </head>
+
+  <body>
+    <div class="rect"></div>
+    <div class="rect"></div>
+    <div class="rect"></div>
+
+    <script>
+      {
+        // 特定の範囲に収まるように値をまるめる
+        // clamp(下限, 上限, 丸めたい値)
+        const value1 = gsap.utils.clamp(0, 100, -12); // 0
+        const value2 = gsap.utils.clamp(0, 100, 200); // 100
+        console.log("clamp", value1, value2);
+      }
+
+      {
+        // 文字列の単位を取得
+        const value1 = gsap.utils.getUnit("30px"); // "px"
+        const value2 = gsap.utils.getUnit("30%"); // "%"
+        const value3 = gsap.utils.getUnit("0.8rem"); // "rem"
+        console.log("getUnit", value1, value2, value3);
+      }
+
+      {
+        // 2つの値の間を補間
+        const value1 = gsap.utils.interpolate(0, 100, 0.5); // 50
+        const value2 = gsap.utils.interpolate("red", "blue", 0.5); // "rgba(128,0,128,1)"
+        const value3 = gsap.utils.interpolate(
+          "hls(0,50%,50%)",
+          "hls(180,0%,0%)",
+          0.5,
+        ); // "%"
+        console.log("interpolate", value1, value2, value3);
+      }
+
+      {
+        // ある範囲を別の範囲にマップする
+        // mapRange(x下限, x上限, y下限, y上限, xValue)
+        const value1 = gsap.utils.mapRange(-10, 10, 0, 100, 5); // 75
+        console.log("mapRange", value1);
+      }
+
+      {
+        // 正規化。範囲内の数値を0〜1の割合にする
+        // mapRange(下限, 上限, 値)
+        const value1 = gsap.utils.normalize(100, 200, 150); // 0.5
+        console.log("normalize", value1);
+      }
+
+      {
+        // 関数呼び出しを連続させ、それぞれの結果を次の関数に渡す
+        const value1 = gsap.utils.pipe(
+          gsap.utils.clamp(0, 100),
+          gsap.utils.snap(5),
+        )(8); // 10
+        console.log("pipe", value1);
+      }
+
+      {
+        // 乱数生成
+        // random(下限, 上限, ステップ)
+        const value1 = gsap.utils.random(0, 100, 5);
+        // 配列のなかから選ぶ
+        const value2 = gsap.utils.random(["red", "green", "blue"]);
+        console.log("random", value1, value2);
+      }
+
+      {
+        // 配列のシャッフル（破壊的変更）
+        const array = [1, 2, 3, 4, 5];
+        const value1 = gsap.utils.shuffle(array);
+        console.log("shuffle", array, value1);
+      }
+
+      {
+        // スナップ
+        // snap(段階, 値)
+        const value1 = gsap.utils.snap(5, 13); // 15
+        // snap(段階を示す配列, 値)
+        const value2 = gsap.utils.snap([0, 5, 10], 7); // 5
+        console.log("snap", value1, value2);
+      }
+
+      {
+        // 色分解
+        const value1 = gsap.utils.splitColor("yellow");
+        const value2 = gsap.utils.splitColor("rgb(255,0,128)");
+        const value3 = gsap.utils.splitColor("hls(180,50%,50%)");
+        console.log("splitColor", value1, value2, value3);
+      }
+
+      {
+        // 配列化
+        const value1 = gsap.utils.toArray(".rect");
+        console.log("toArray", value1);
+      }
+
+      {
+        // 折り返し
+        const value1 = gsap.utils.wrap(5, 10, 12); // 7
+        console.log("wrap", value1);
+      }
+    </script>
+  </body>
+</html>

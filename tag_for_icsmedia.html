@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Title</title>
+    <style>
+      input {
+        width: 100%;
+      }
+      pre {
+        padding: 16px 16px;
+        background-color: azure;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <p>
+        <label
+          >Repository<input type="search" v-model="repository" @focus="onFocus"
+        /></label>
+      </p>
+      <p>
+        <label
+          >Filename<input type="search" v-model="filename" @focus="onFocus"
+        /></label>
+      </p>
+
+      <div>
+        <pre>{{output}}</pre>
+      </div>
+
+      <button @click="copy">copy</button>
+    </div>
+    <script type="module">
+      import {
+        ref,
+        createApp,
+        computed,
+      } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.js";
+
+      const app = createApp({
+        /* Vue.jsの各種処理 */
+
+        setup() {
+          const filename = ref("example.html");
+          const repository = ref("220819_gsap_examples");
+
+          const output = computed(
+            () => `<amp-iframe width="960" height="540" sandbox="allow-scripts" layout="responsive" src="https://ics-creative.github.io/${repository.value}/${filename.value}"></amp-iframe>
+
+- [別タブで再生する](https://ics-creative.github.io/${repository.value}/${filename.value})
+- [ソースコードを確認する](https://github.com/ics-creative/${repository.value}/blob/main/docs/${filename.value})`,
+          );
+
+          const onFocus = (event) => {
+            event.currentTarget.select();
+          };
+
+          const copy = () => {
+            navigator.clipboard.writeText(output.value);
+          };
+          return {
+            filename,
+            repository,
+            output,
+            copy,
+            onFocus,
+          };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

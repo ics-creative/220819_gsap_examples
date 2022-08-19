@@ -5,20 +5,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
-const params = { radian: 0 };
+        const params = { radian: 0 };
 
-gsap.to(params, {
-  radian: Math.PI * 2,
-  duration: 2,
-  ease: "power4.inOut",
-  onUpdate: () => {
-    const { radian } = params;
-    const x = Math.cos(radian) * 100;
-    const y = Math.sin(radian) * 100;
-    gsap.set(".circle", { x, y });
-  },
-  repeat: -1,
-});
+        gsap.to(params, {
+          radian: Math.PI * 2,
+          duration: 2,
+          ease: "power4.inOut",
+          onUpdate: () => {
+            const { radian } = params;
+            const x = Math.cos(radian) * 100;
+            const y = Math.sin(radian) * 100;
+            gsap.set(".circle", { x, y });
+          },
+          repeat: -1,
+        });
       });
     </script>
     <style>
