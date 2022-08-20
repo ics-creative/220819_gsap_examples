@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/MotionPathPlugin.min.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        gsap.registerPlugin(MotionPathPlugin);
+
+        // たくさんの矩形を配置
+        for (let i = 0; i < 20; i++) {
+          const rect = document.createElement("div");
+          rect.classList.add("rect");
+          document.body.appendChild(rect);
+        }
+
+        // 一緒くたに移動
+        const list = gsap.utils.toArray(".rect");
+        list.forEach((rect, index) => {
+          gsap.set(rect, {
+            x: 100,
+            y: 100,
+            scale: 0.0,
+            // backgroundColor: `hsl(${90 * Math.random() + 180}, 80%, 50%)`
+          });
+          gsap.to(rect, {
+            duration: 2 + Math.random() * 3,
+            repeat: -1,
+            ease: "power1.inOut",
+            x: 800,
+            motionPath: [
+              { x: 250, y: (Math.random() - 0.5) * 100 + 100, scale: 1 },
+              { x: 800, y: (Math.random() - 0.5) * 200 + 100, scale: 0 },
+            ],
+            delay: index * 0.05,
+          });
+        });
+      });
+    </script>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        color: white;
+        background: black;
+        height: 100%;
+        font-family: sans-serif;
+      }
+      .rect {
+        width: 1vw;
+        height: 1vw;
+        position: absolute;
+        background-color: white;
+        top: 0;
+        left: 0;
+        mix-blend-mode: screen;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="rect"></div>
+  </body>
+</html>
