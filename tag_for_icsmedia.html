@@ -48,10 +48,10 @@
           const repository = ref("220819_gsap_examples");
 
           const output = computed(
-            () => `<amp-iframe width="960" height="540" sandbox="allow-scripts" layout="responsive" src="https://ics-creative.github.io/${repository.value}/${filename.value}"></amp-iframe>
+            () => `<amp-iframe width="960" height="540" sandbox="allow-scripts" layout="responsive" src="https://ics-creative.github.io/${repository.current}/${filename.current}"></amp-iframe>
 
-- [別タブで再生する](https://ics-creative.github.io/${repository.value}/${filename.value})
-- [ソースコードを確認する](https://github.com/ics-creative/${repository.value}/blob/main/docs/${filename.value})`,
+- [別タブで再生する](https://ics-creative.github.io/${repository.current}/${filename.current})
+- [ソースコードを確認する](https://github.com/ics-creative/${repository.current}/blob/main/docs/${filename.current})`,
           );
 
           const onFocus = (event) => {
@@ -59,7 +59,7 @@
           };
 
           const copy = () => {
-            navigator.clipboard.writeText(output.value);
+            navigator.clipboard.writeText(output.current);
           };
           return {
             filename,

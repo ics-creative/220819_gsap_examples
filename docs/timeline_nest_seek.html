@@ -2,49 +2,122 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="color-scheme" content="dark" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        const tl = gsap.timeline({
-          repeat: -1,
-          repeatDelay: 0.5,
-          paused: true,
-        });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/EasePack.min.js"></script>
 
-        document.querySelectorAll(".word").forEach((word) => {
-          tl.add(createChildTimeline(word), "-=90%");
-        });
+    <script type="module">
+      import {
+        ref,
+        watch,
+        watchEffect,
+        createApp,
+        computed,
+      } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.js";
 
-        inputRange.setAttribute("min", 0);
-        inputRange.setAttribute("max", tl.duration());
-        inputRange.addEventListener("input", () => {
-          tl.seek(inputRange.value);
-          console.log(inputRange.value);
-        });
-
-        function createChildTimeline(element) {
-          const elText = element.querySelector(".rect");
-          const tl = gsap
-            .timeline()
-            .from(element, {
-              y: 16,
-              opacity: 0,
-              duration: 0.75,
+      function createChildTimeline(element) {
+        const elText = element.querySelector(".rect");
+        const tl = gsap
+          .timeline()
+          .from(element, {
+            y: 16,
+            opacity: 0,
+            duration: 0.75,
+            ease: "power4.out",
+          })
+          .set(elText, { opacity: 0 })
+          .to(
+            elText,
+            {
+              x: "105%",
+              duration: 1,
               ease: "power4.out",
-            })
-            .set(elText, { opacity: 0 })
-            .to(
-              elText,
-              {
-                x: "105%",
-                duration: 1,
-                ease: "power4.out",
-              },
-              "-=50%",
-            );
-          return tl;
-        }
+            },
+            "-=50%",
+          );
+        return tl;
+      }
+
+      // タイムラインを作成
+      const tl = gsap.timeline({
+        repeat: -1,
+        paused: true,
       });
+
+      document.querySelectorAll(".word").forEach((word) => {
+        tl.add(createChildTimeline(word), "-=80%");
+      });
+
+      const app = createApp({
+        /* Vue.jsの各種処理 */
+        setup() {
+          const current = ref(0);
+          const duration = ref(tl.duration());
+          const speed = ref(1);
+          const ease = ref("none");
+          const lock = ref(false);
+
+          const stop = () => {
+            gsap.killTweensOf(current);
+            current.value = 0;
+            lock.value = false;
+          };
+          const pause = () => {
+            gsap.killTweensOf(current);
+            lock.value = false;
+          };
+          const play = () => {
+            const speedNum = 1 / Number(speed.value);
+            const from = tl.duration() === tl.time() ? 0 : tl.time();
+            const duration =
+              tl.duration() === tl.time()
+                ? tl.duration() * speedNum
+                : (tl.duration() - tl.time()) * speedNum;
+
+            console.log(ease.value);
+            gsap.fromTo(
+              current,
+              { value: from },
+              {
+                value: tl.duration(),
+                duration,
+                ease: ease.value,
+                onStart: () => {
+                  lock.value = true;
+                },
+                onComplete: () => {
+                  lock.value = false;
+                },
+              },
+            );
+          };
+          watch(
+            () => tl.time(),
+            (next, old) => {
+              console.log(next, old);
+              console.log(tl.time());
+            },
+          );
+          watchEffect(() => {
+            tl.seek(Number(current.value));
+          });
+
+          const timeDisplay = computed(() => Number(current.value).toFixed(2));
+
+          return {
+            current,
+            duration,
+            stop,
+            play,
+            pause,
+            speed,
+            ease,
+            lock,
+            timeDisplay,
+          };
+        },
+      });
+      app.mount("#app");
     </script>
     <style>
       body {
@@ -57,6 +130,8 @@
       .container {
         position: absolute;
         top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
       span.word {
         display: inline-block;
@@ -64,6 +139,7 @@
         position: relative;
         line-height: 1;
         font-size: 4rem;
+        font-weight: 900;
       }
       .rect {
         width: 100%;
@@ -73,39 +149,108 @@
         top: 0;
         left: 0;
       }
+      #app {
+        margin-top: 32px;
+      }
+      button {
+        width: 32px;
+        height: 32px;
+        appearance: none;
+        border: 1px solid white;
+        color: white;
+        background: none;
+        user-select: none;
+      }
+      button:hover {
+        color: black;
+        background: white;
+      }
+
+      input[type="range"] {
+        appearance: none;
+        cursor: pointer;
+        height: 14px;
+        width: 100%;
+        background: black;
+        border-radius: 0;
+        border: solid 1px white;
+      }
+      /* WebKit向けのつまみ */
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background: white;
+        width: 14px;
+        height: 14px;
+      }
+
+      .ui {
+        display: grid;
+        grid-template: "buttons range time speed" / auto 1fr auto auto;
+        gap: 8px;
+        align-items: center;
+      }
+      .buttons,
+      .speed {
+        display: flex;
+        gap: 4px;
+      }
     </style>
   </head>
 
   <body>
     <div class="container">
       <div>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.001"
-          value="0"
-          id="inputRange"
-        />
+        <span class="word"
+          ><span class="rect"></span
+          ><span class="label">INTERACTION</span></span
+        >
+        <span class="word"
+          ><span class="rect"></span><span class="label">DESIGN</span></span
+        >
+        <span class="word"
+          ><span class="rect"></span><span class="label">&</span></span
+        >
+        <span class="word"
+          ><span class="rect"></span><span class="label">TECHNOLOGY</span></span
+        >
+        <span class="word"
+          ><span class="rect"></span><span class="label">by</span></span
+        >
+        <span class="word"
+          ><span class="rect"></span><span class="label">ICS MEDIA</span></span
+        >
       </div>
-      <span class="word"
-        ><span class="rect"></span><span class="label">ICS MEDIA</span></span
-      >
-      <span class="word"
-        ><span class="rect"></span><span class="label">is</span></span
-      >
-      <span class="word"
-        ><span class="rect"></span><span class="label">build</span></span
-      >
-      <span class="word"
-        ><span class="rect"></span><span class="label">with</span></span
-      >
-      <span class="word"
-        ><span class="rect"></span><span class="label">Nuxt</span></span
-      >
-      <span class="word"
-        ><span class="rect"></span><span class="label">.</span></span
-      >
+      <div id="app">
+        <div class="ui">
+          <div class="buttons">
+            <button @click="stop" title="Stop">■</button>
+            <button @click="pause" title="Pause">||</button>
+            <button @click="play" title="Play">▶</button>
+          </div>
+          <div class="range">
+            <input
+              type="range"
+              min="0"
+              :max="duration"
+              step="0.001"
+              v-model="current"
+            />
+          </div>
+          <div class="time">{{timeDisplay}}sec</div>
+
+          <div class="speed">
+            <select v-model="speed" :disabled="lock" title="Play Speed">
+              <option value="0.5">x0.5</option>
+              <option value="1">x1</option>
+              <option value="2">x2</option>
+            </select>
+            <select v-model="ease" :disabled="lock" title="Use Easing">
+              <option value="none">Normal</option>
+              <option value="slow(0.3, 0.95, false)">Custom Ease</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

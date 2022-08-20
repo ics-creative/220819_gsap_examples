@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/EasePack.min.js"></script>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        for (let i = 0; i < 100; i++) {
+          const rect = document.createElement("div");
+          rect.classList.add("rect");
+          document.querySelector(".container").appendChild(rect);
+        }
+
+        // 格子状に適用
+        const tl = gsap
+          .timeline()
+          .from(".rect", {
+            scale: 0,
+            rotation: -360,
+            duration: 0.5,
+            stagger: {
+              each: 0.1,
+              from: "start", // 中央から
+              grid: "auto", // 格子状に開始
+            },
+          })
+          .addLabel("complete");
+
+        // 時間軸に対してトゥイーン
+        tl.tweenTo("complete", {
+          duration: 4,
+          // ここに時間軸に対してイージング
+          ease: "slow(0.4, 0.9, false)",
+          repeat: -1,
+          repeatDelay: 0.5,
+        });
+      });
+    </script>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        color: white;
+        background: #000;
+        height: 100%;
+        font-family: sans-serif;
+        display: grid;
+        place-items: center;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(10, 5vw);
+        gap: 10px;
+      }
+
+      .rect {
+        width: 5vw;
+        height: 5vw;
+        display: block;
+        border: white 2px solid;
+        position: relative;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container"></div>
+  </body>
+</html>

@@ -48,14 +48,12 @@
       }
 
       .container {
-        display: grid;
-        gap: 16px 32px;
-        margin: 32px;
+        margin: 16px;
       }
 
       .rect {
-        width: 5vw;
-        height: 5vw;
+        width: 3vw;
+        height: 3vw;
         display: block;
         background: white;
         position: relative;
@@ -64,32 +62,45 @@
       h1 {
         font-size: 16px;
       }
+
+      .example {
+        position: relative;
+      }
+      .example::before {
+        position: absolute;
+        content: "";
+        display: block;
+        background-color: #080808;
+        width: 78vw;
+        height: 3vw;
+        bottom: 0;
+      }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <div class="example-back">
+      <div class="example example-back">
         <h1>back.out</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-backEx">
+      <div class="example example-backEx">
         <h1>back.out(4)</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-elastic">
+      <div class="example example-elastic">
         <h1>elastic.out</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-elasticEx">
+      <div class="example example-elasticEx">
         <h1>elastic.out(1.2, 0.2)</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-bounce">
+      <div class="example example-bounce">
         <h1>bounce.out</h1>
         <div class="rect"></div>
       </div>

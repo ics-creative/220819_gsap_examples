@@ -81,6 +81,10 @@
         position: relative;
       }
 
+      .rect img {
+        object-fit: cover;
+      }
+
       .ui {
         margin-top: 32px;
         margin-bottom: 32px;
@@ -89,13 +93,27 @@
       h1 {
         font-size: 16px;
       }
+
+      button {
+        width: 32px;
+        height: 32px;
+        appearance: none;
+        border: 1px solid white;
+        color: white;
+        background: none;
+        user-select: none;
+      }
+      button:hover {
+        color: black;
+        background: white;
+      }
     </style>
   </head>
 
   <body>
     <div class="container">
       <div class="example-scale">
-        <h1>scale</h1>
+        <h1>Rotate</h1>
         <div class="ui">
           <button id="buttonScalePlus">+</button>
           <button id="buttonScaleMinus">-</button>
@@ -104,7 +122,7 @@
       </div>
 
       <div class="example-color">
-        <h1>scale</h1>
+        <h1>Hue</h1>
         <div class="ui">
           <button id="buttonColorPlus">+</button>
           <button id="buttonColorMinus">-</button>
@@ -113,7 +131,7 @@
       </div>
 
       <div class="example-filter">
-        <h1>scale</h1>
+        <h1>brightness</h1>
         <div class="ui">
           <button id="buttonFilterPlus">+</button>
           <button id="buttonFilterMinus">-</button>

@@ -12,26 +12,24 @@
         for (let i = 0; i < 20; i++) {
           const rect = document.createElement("div");
           rect.classList.add("rect");
-          document.body.appendChild(rect);
+          document.querySelector(".container").appendChild(rect);
         }
 
         // 一緒くたに移動
         const list = gsap.utils.toArray(".rect");
         list.forEach((rect, index) => {
           gsap.set(rect, {
-            x: 100,
-            y: 100,
+            x: "-40vw",
             scale: 0.0,
-            // backgroundColor: `hsl(${90 * Math.random() + 180}, 80%, 50%)`
           });
           gsap.to(rect, {
             duration: 2 + Math.random() * 3,
             repeat: -1,
             ease: "power1.inOut",
-            x: 800,
+            x: "40vw",
             motionPath: [
-              { x: 250, y: (Math.random() - 0.5) * 100 + 100, scale: 1 },
-              { x: 800, y: (Math.random() - 0.5) * 200 + 100, scale: 0 },
+              { y: (Math.random() - 0.5) * 20 + "vh", scale: 1 },
+              { y: (Math.random() - 0.5) * 50 + "vh", scale: 0 },
             ],
             delay: index * 0.05,
           });
@@ -49,7 +47,11 @@
         color: white;
         background: black;
         height: 100%;
-        font-family: sans-serif;
+        display: grid;
+        place-items: center;
+      }
+      .container {
+        position: absolute;
       }
       .rect {
         width: 1vw;
@@ -65,6 +67,8 @@
   </head>
 
   <body>
-    <div class="rect"></div>
+    <div class="container">
+      <div class="rect"></div>
+    </div>
   </body>
 </html>

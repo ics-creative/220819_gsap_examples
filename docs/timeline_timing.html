@@ -7,15 +7,15 @@
       window.addEventListener("DOMContentLoaded", () => {
         gsap
           .timeline({ repeat: -1, repeatDelay: 0.5 })
-          .set("h1", { textContent: "show" })
+          .set("h1", { textContent: "Show Motion" })
           .from(".rect1", { y: -32, opacity: 0, duration: 0.5 })
           .from(".rect2", { y: 32, opacity: 0, duration: 0.5 })
           .from(".rect3", { y: -32, opacity: 0, duration: 0.5 })
           .from(".rect4", { y: 32, opacity: 0, duration: 0.5 })
           .from(".rect5", { y: -32, opacity: 0, duration: 0.5 })
           .from(".rect6", { y: 32, opacity: 0, duration: 0.5 })
-          .set("h1", { textContent: "hide" }, "+=0.5") // 0.5秒待機
-          .to(".rect1", { y: -32, opacity: 0, duration: 0.5 })
+          .set("h1", { textContent: "Hide Motion" }, "+=1") // 0.5秒待機
+          .to(".rect1", { y: -32, opacity: 0, duration: 0.5 }, "+=0.5")
           .to(".rect2", { y: 32, opacity: 0, duration: 0.5 }, "-=0.4") // 0.4秒開始を早める
           .to(".rect3", { y: -32, opacity: 0, duration: 0.5 }, "-=0.4")
           .to(".rect4", { y: 32, opacity: 0, duration: 0.5 }, "-=0.4")
@@ -24,22 +24,26 @@
       });
     </script>
     <style>
+      html {
+        height: 100%;
+      }
       body {
+        height: 100%;
         margin: 0;
         padding: 0;
         background: #000;
         color: white;
         font-family: sans-serif;
+        display: grid;
+        place-items: center;
       }
       .container {
-        position: absolute;
-        top: 50%;
         display: flex;
         gap: 32px;
       }
       .rect {
-        width: 20vw;
-        height: 20vw;
+        width: 10vw;
+        height: 10vw;
         display: block;
         background: white;
       }
@@ -47,14 +51,16 @@
   </head>
 
   <body>
-    <h1>serial</h1>
-    <div class="container">
-      <div class="rect rect1"></div>
-      <div class="rect rect2"></div>
-      <div class="rect rect3"></div>
-      <div class="rect rect4"></div>
-      <div class="rect rect5"></div>
-      <div class="rect rect6"></div>
+    <div>
+      <h1>Show Motion</h1>
+      <div class="container">
+        <div class="rect rect1"></div>
+        <div class="rect rect2"></div>
+        <div class="rect rect3"></div>
+        <div class="rect rect4"></div>
+        <div class="rect rect5"></div>
+        <div class="rect rect6"></div>
+      </div>
     </div>
   </body>
 </html>

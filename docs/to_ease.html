@@ -44,14 +44,12 @@
       }
 
       .container {
-        display: grid;
-        gap: 16px 32px;
-        margin: 32px;
+        margin: 16px;
       }
 
       .rect {
-        width: 5vw;
-        height: 5vw;
+        width: 3vw;
+        height: 3vw;
         display: block;
         background: white;
         position: relative;
@@ -60,37 +58,50 @@
       h1 {
         font-size: 16px;
       }
+
+      .example {
+        position: relative;
+      }
+      .example::before {
+        position: absolute;
+        content: "";
+        display: block;
+        background-color: #080808;
+        width: 78vw;
+        height: 3vw;
+        bottom: 0;
+      }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <div class="example-linear">
+      <div class="example example-linear">
         <h1>linear</h1>
         <div class="rect"></div>
       </div>
-      <div class="example-sine">
+      <div class="example example-sine">
         <h1>sine.out</h1>
         <div class="rect"></div>
       </div>
-      <div class="example-power1">
+      <div class="example example-power1">
         <h1>power1.out</h1>
         <div class="rect"></div>
       </div>
-      <div class="example-power2">
+      <div class="example example-power2">
         <h1>power2.out</h1>
         <div class="rect"></div>
       </div>
-      <div class="example-power3">
+      <div class="example example-power3">
         <h1>power3.out</h1>
         <div class="rect"></div>
       </div>
-      <div class="example-power4">
+      <div class="example example-power4">
         <h1>power4.out</h1>
         <div class="rect"></div>
       </div>
 
-      <div class="example-expo">
+      <div class="example example-expo">
         <h1>expo.out</h1>
         <div class="rect"></div>
       </div>
