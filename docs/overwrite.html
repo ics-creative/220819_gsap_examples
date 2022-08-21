@@ -27,8 +27,8 @@
 
           element.addEventListener("mouseenter", () => {
             gsap.to(element, {
-              scale: 1.2,
-              duration: 0.5,
+              scale: 1.5,
+              duration: 1,
               overwrite,
             });
           });
@@ -79,8 +79,6 @@
 
   <body>
     <div>
-      <button class="restart">Restart</button>
-
       <h1>Overwrite - false</h1>
       <div class="container">
         <button class="example">Hover Me</button>
@@ -94,6 +92,8 @@
         <button class="example">Hover Me</button>
         <button class="example">Hover Me</button>
       </div>
+      <br /><br />
+      <button class="restart">Show Motion</button>
     </div>
   </body>
 </html>

@@ -34,11 +34,13 @@
         const value1 = gsap.utils.interpolate(0, 100, 0.5); // 50
         const value2 = gsap.utils.interpolate("red", "blue", 0.5); // "rgba(128,0,128,1)"
         const value3 = gsap.utils.interpolate(
-          "hls(0,50%,50%)",
-          "hls(180,0%,0%)",
+          "hls(0, 100%, 50%)",
+          "hls(180, 100%, 50%)",
           0.5,
-        ); // "%"
-        console.log("interpolate", value1, value2, value3);
+        ); // hls(90, 100%, 50%)
+        const value4 = gsap.utils.interpolate("red", "rgb(0, 0, 255)", 0.5); // rgba(128,0,128,1)
+        console.log("interpolate");
+        console.table({ value1, value2, value3, value4 });
       }
 
       {
@@ -93,8 +95,9 @@
         // 色分解
         const value1 = gsap.utils.splitColor("yellow");
         const value2 = gsap.utils.splitColor("rgb(255,0,128)");
-        const value3 = gsap.utils.splitColor("hls(180,50%,50%)");
-        console.log("splitColor", value1, value2, value3);
+        const value3 = gsap.utils.splitColor("hls(180,100%,50%)");
+        console.log("splitColor");
+        console.table({ value1, value2, value3 });
       }
 
       {
