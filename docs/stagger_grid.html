@@ -13,7 +13,7 @@
           repeatDelay: 0.5, // 繰り返し時に0.5秒の待機
         });
 
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 300; i++) {
           const rect = document.createElement("div");
           rect.classList.add("rect");
           document.querySelector(".container").appendChild(rect);
@@ -42,13 +42,13 @@
 
       .container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, 5vw);
-        gap: 10px;
+        grid-template-columns: repeat(auto-fill, 3vw);
+        gap: 5px;
       }
 
       .rect {
-        width: 5vw;
-        height: 5vw;
+        width: 3vw;
+        height: 3vw;
         display: block;
         background: white;
         position: relative;
