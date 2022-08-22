@@ -19,21 +19,24 @@
         // 一緒くたに移動
         const list = gsap.utils.toArray(".rect");
         list.forEach((rect, index) => {
-          gsap.set(rect, {
-            x: "-40vw",
-            scale: 0.0,
-          });
-          gsap.to(rect, {
-            duration: 2 + Math.random() * 3,
-            repeat: -1,
-            ease: "power1.inOut",
-            x: "40vw",
-            motionPath: [
-              { y: (Math.random() - 0.5) * 20 + "vh", scale: 1 },
-              { y: (Math.random() - 0.5) * 50 + "vh", scale: 0 },
-            ],
-            delay: index * 0.05,
-          });
+          gsap.fromTo(
+            rect,
+            {
+              x: "-40vw",
+              scale: 0.0,
+            },
+            {
+              duration: 2 + Math.random() * 3,
+              repeat: -1,
+              ease: "power1.inOut",
+              x: "40vw",
+              motionPath: [
+                { y: (Math.random() - 0.5) * 20 + "vh", scale: 1 },
+                { y: (Math.random() - 0.5) * 50 + "vh", scale: 0 },
+              ],
+              delay: Math.random(),
+            },
+          );
         });
       });
     </script>
