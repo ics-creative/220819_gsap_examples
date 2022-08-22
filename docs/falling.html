@@ -17,15 +17,18 @@
           rect.classList.add("rect");
           document.body.appendChild(rect);
 
-          rect.style.left = `${Math.random() * 100}vw`;
+          rect.style.left = `${i}vw`;
         }
 
         // 画面下部に落下
         gsap.to(".rect", {
-          bottom: 0,
+          y: "100vh",
           duration: 2,
           ease: "bounce.out",
-          stagger: 0.01,
+          stagger: {
+            each: 0.01, // ばらす間隔（秒）
+            from: "random" // ランダムに開始
+          },
         });
       });
     </script>
@@ -45,6 +48,7 @@
         background: white;
 
         left: 25vw;
+        top: -1vh;
       }
     </style>
   </head>

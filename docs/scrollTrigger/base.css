@@ -23,6 +23,12 @@ h1.hero {
   font-size: calc(100vw / 10);
   height: 100vh;
   line-height: 100vh;
+  animation: bright 0.2s infinite alternate;
+}
+
+@keyframes bright {
+  from { opacity: 0.9 }
+  to { opacity: 1 }
 }
 
 p {
