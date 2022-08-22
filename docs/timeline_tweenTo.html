@@ -7,7 +7,7 @@
 
     <script>
       window.addEventListener("DOMContentLoaded", () => {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 13 * 8; i++) {
           const rect = document.createElement("div");
           rect.classList.add("rect");
           document.querySelector(".container").appendChild(rect);
@@ -56,7 +56,7 @@
 
       .container {
         display: grid;
-        grid-template-columns: repeat(10, 5vw);
+        grid-template-columns: repeat(13, 5vw);
         gap: 10px;
       }
 
