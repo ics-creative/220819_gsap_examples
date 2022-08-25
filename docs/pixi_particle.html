@@ -45,6 +45,8 @@
       init();
 
       async function init() {
+        // パーリンノイズを初期化。
+        // ※パーリンノイズはお好みのライブラリをつかってください。
         noise.seed(0);
 
         // 画像を読み込む
@@ -117,6 +119,7 @@
           // 透過チャンネルを取得
           const alpha = dotData.data[3];
 
+          // 透明だったらスプライトは作らないようにする
           if (alpha === 0) {
             continue;
           }
@@ -132,10 +135,14 @@
           dot.y = y - imageH / 2;
           container.addChild(dot);
 
+          // パーリンノイズでパーティクルの移動座標を決める。
+          // パーリンノイズだと連続性が生まれるので、波打つ表現になる。
+          // 乗算は周期と考えてもらえばOK。
           const px = noise.perlin2(nx * 4, ny * 3);
           const py = noise.perlin2(nx * 3, ny * 2);
 
-          const baseDelay = Math.random() * 0.2 + x * 0.0005;
+          // 水平方向に遅延させるけど、ちょっとばらしている。
+          const baseDelay = x * 0.0005 + Math.random() * 0.2;
 
           const perlinAmpX = 1000 * (nx * 2 + 1);
           const perlinAmpY = 500 * (nx * 2 + 1);
@@ -181,6 +188,10 @@
         container.y = app.screen.height / 2;
       }
 
+      /**
+       * パーティクルクラス。
+       * scaleXとscaleYを制御したいためだけに用意したクラスです。
+       */
       class Dot extends PIXI.Sprite {
         constructor(texture) {
           super(texture);
