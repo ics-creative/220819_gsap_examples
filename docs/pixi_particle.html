@@ -40,13 +40,11 @@
     </style>
   </head>
   <body>
-    <button id="play">Play</button>
+    <!--    <button id="play">Play</button>-->
     <script>
-      const button = document.querySelector("#play");
-      button.addEventListener("click", init);
+      init();
 
       async function init() {
-        button.setAttribute("hidden", "true");
         noise.seed(0);
 
         // 画像を読み込む
@@ -143,14 +141,16 @@
           const perlinAmpY = 500 * (nx * 2 + 1);
           const randomAmp = 10 * (nx * 2 + 1);
 
+          const scale = Math.random() * 2 + 1;
+
           tl.from(
             dot,
             {
               x: "-=" + (perlinAmpX * px + randomAmp * (Math.random() - 0.5)),
               y: "-=" + (perlinAmpY * py + randomAmp * (Math.random() - 0.5)),
               alpha: 0,
-              scaleX: 3,
-              scaleY: 3,
+              scaleX: scale,
+              scaleY: scale,
               duration: 2,
               ease: "expo.inOut",
             },
@@ -161,8 +161,8 @@
               x: "+=" + (perlinAmpX * px + randomAmp * (Math.random() - 0.5)),
               y: "+=" + (perlinAmpY * py + randomAmp * (Math.random() - 0.5)),
               alpha: 0,
-              scaleX: 2,
-              scaleY: 2,
+              scaleX: scale,
+              scaleY: scale,
               duration: 2,
               ease: "expo.out",
             },
