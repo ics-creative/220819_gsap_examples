@@ -47,7 +47,7 @@
       async function init() {
         // パーリンノイズを初期化。
         // ※パーリンノイズはお好みのライブラリをつかってください。
-        noise.seed(0);
+        noise.seed(Date.now());
 
         // 画像を読み込む
         const image = await new Promise((resolve) => {
@@ -55,7 +55,7 @@
           img.addEventListener("load", () => {
             resolve(img);
           });
-          img.src = "images/text.png";
+          img.src = "images/text_2x.png";
         });
 
         // PIXIのアプリケーションを作成する
@@ -133,6 +133,7 @@
           dot.anchor.set(0.5);
           dot.x = x - imageW / 2;
           dot.y = y - imageH / 2;
+          dot.alpha = alpha / 255; // 元画像の透明度を適用
           container.addChild(dot);
 
           // パーリンノイズでパーティクルの移動座標を決める。
@@ -183,9 +184,13 @@
           0,
         );
 
-        // コンテナーを中心に移動
-        container.x = app.screen.width / 2;
-        container.y = app.screen.height / 2;
+        const resize = () => {
+          // コンテナーを中心に移動
+          container.x = app.screen.width / 2;
+          container.y = app.screen.height / 2;
+        };
+        window.addEventListener("resize", resize);
+        resize();
       }
 
       /**
