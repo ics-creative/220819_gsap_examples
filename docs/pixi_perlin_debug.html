@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="color-scheme" content="dark" />
+
+    <script src="libs/perlin.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: black;
+        color: white;
+      }
+
+      #app {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+
+      <p>
+        <label>
+          RANGE
+          <input type="range" min="1" max="100" v-model="range" step="1" />
+          <input type="number" min="1" max="100" v-model="range" step="1" />
+        </label>
+        {{Math.round(range * 10) / 10}}
+      </p>
+
+      <p>
+        <label>
+          X
+          <input type="range" :min="-range" :max="range" v-model="x" step="0.01" />
+          <input type="number" :min="-range" :max="range" v-model="x" step="0.1" />
+        </label>
+        {{Math.round(x * 10) / 10}}
+      </p>
+      <p>
+        <label>
+          Y
+          <input type="range" :min="-range" :max="range" v-model="y" step="0.01" />
+          <input type="number" :min="-range" :max="range" v-model="y" step="0.1" />
+        </label>
+        {{Math.round(y * 10) / 10}}
+      </p>
+      {{result}}
+      <div>
+        <canvas id="graff" width="400" height="400">
+      </div>
+
+    </div>
+    <script type="module">
+      import {
+        ref,
+        computed,
+        createApp,
+        onMounted,
+      } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.js";
+
+      const app = createApp({
+        setup() {
+          const x = ref(0);
+          const y = ref(0);
+          const range = ref(10);
+
+          const result = computed(() => noise.perlin2(x.value, y.value))
+
+          onMounted(() => {
+            // canvas に value の値を描画する
+            const canvas = document.getElementById("graff");
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const draw = () => {
+              ctx.drawImage(canvas, -1, 0);
+
+              ctx.fillStyle = "red"
+              ctx.fillRect(canvas.width/2, canvas.height * (result.value / 2 + 0.5), 2, 2);
+              requestAnimationFrame(draw)
+            }
+            draw()
+          })
+          return {x, y, range, result};
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

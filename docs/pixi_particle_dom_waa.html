@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+
+    <script src="libs/perlin.js"></script>
+
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background-color: black;
+        color: white;
+        display: grid;
+        place-items: center;
+      }
+      #container {
+        width: 0;
+        height: 0;
+        position: relative;
+      }
+      .dot {
+        width: 1px;
+        height: 1px;
+        background-color: white;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      init();
+
+      async function init() {
+        // パーリンノイズを初期化。
+        // ※パーリンノイズはお好みのライブラリをつかってください。
+        noise.seed(Date.now());
+
+        // 画像を読み込む
+        const image = await new Promise((resolve) => {
+          const img = document.createElement("img");
+          img.addEventListener("load", () => {
+            resolve(img);
+          });
+          // img.src = "images/text_half.png";
+          img.src = "images/text_1x.png";
+        });
+
+        // ドットサイズの大きさ。1は等倍。
+        // 1は綺麗だけど、TLの初期化に時間を要するのでやむなく倍化で。
+        const DOT_SIZE = 1;
+
+        // 画像のサイズを算出
+        const imageW = image.width;
+        const imageH = image.height;
+        const lengthW = imageW / DOT_SIZE;
+        const lengthH = imageH / DOT_SIZE;
+
+        // 画像をメモリ上のcanvasに転写。ピクセル値を取得するため
+        const canvas = document.createElement("canvas");
+        canvas.width = imageW;
+        canvas.height = imageH;
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        context.drawImage(image, 0, 0);
+
+        // ----------------------------------------------
+        // パーティクルの生成
+        // ----------------------------------------------
+        const dots = [];
+        for (let i = 0; i < lengthW * lengthH; i++) {
+          const x = (i % lengthW) * DOT_SIZE;
+          const y = Math.floor(i / lengthW) * DOT_SIZE;
+
+          const dotData = context.getImageData(
+            // 範囲の中央を利用
+            x + Math.floor(DOT_SIZE / 2),
+            y + Math.floor(DOT_SIZE / 2),
+            1,
+            1,
+          );
+          // 透過チャンネルを取得
+          const alpha = dotData.data[3];
+
+          // 透明だったらスプライトは作らないようにする
+          if (alpha === 0) {
+            continue;
+          }
+
+          const dot = document.createElement("div");
+          dot.classList.add("dot");
+          dot.style.left = x - imageW / 2 + "px";
+          dot.style.top = y - imageH / 2 + "px";
+          dot.style.opacity = alpha / 255;
+          dot.dataset.offsetIndex = String(i);
+          document.getElementById("container").append(dot);
+
+          dots.push(dot);
+        }
+
+        // ----------------------------------------------
+        // モーションの実装
+        // ----------------------------------------------
+
+        for (let i = 0; i < dots.length; i++) {
+          const dot = dots[i];
+
+          const index = dot.dataset.offsetIndex;
+
+          // XとYを正規化 (Normalize X and Y)
+          const nx = (index % lengthW) / lengthW;
+          const ny = Math.floor(index / lengthW) / lengthH;
+
+          // パーリンノイズでパーティクルの移動座標を決める。
+          // パーリンノイズだと連続性が生まれるので、波打つ表現になる。
+          // 乗算は周期と考えてもらえばOK。
+          const px = noise.perlin2(nx * 4, ny * 3);
+          const py = noise.perlin2(nx * 3, ny * 2);
+
+          // 水平方向に遅延させるけど、ちょっとばらしている。
+          const baseDelay = (index % lengthW) * 0.001 + Math.random() * 0.2;
+
+          const perlinAmpX = 1000 * (nx * 2 + 1);
+          const perlinAmpY = 500 * (nx * 2 + 1);
+          const randomAmp = 10 * (nx * 2 + 1);
+
+          const orignOpacity = dot.style.opacity;
+          const orignObj = {
+            transform: `translate(${0}px, ${0}px)`,
+            opacity: orignOpacity,
+          };
+
+          dot.style.opacity = 0;
+
+          dot.animate(
+            [
+              {
+                transform: `translate(${
+                  perlinAmpX * px + randomAmp * (Math.random() - 0.5)
+                }px, ${perlinAmpY * py + randomAmp * (Math.random() - 0.5)}px)`,
+                opacity: 0,
+                easing: "cubic-bezier(1, 0, 0, 1)" /* easeInOutExpo */,
+              },
+              orignObj,
+              orignObj,
+              {
+                transform: `translate(${
+                  perlinAmpX * px + randomAmp * (Math.random() - 0.5)
+                }px, ${perlinAmpY * py + randomAmp * (Math.random() - 0.5)}px)`,
+                opacity: 0,
+                easing: "cubic-bezier(0.19, 1, 0.22, 1)" /* easeOutExpo */,
+              },
+            ],
+            {
+              duration: 5000,
+              delay: baseDelay * 1000,
+              iterations: Infinity,
+            },
+          );
+
+          // tl.from(
+          //   dot,
+          //   {
+          //     x: "-=" + (perlinAmpX * px + randomAmp * (Math.random() - 0.5)),
+          //     y: "-=" + (perlinAmpY * py + randomAmp * (Math.random() - 0.5)),
+          //     alpha: 0,
+          //     duration: 2,
+          //     ease: "expo.inOut",
+          //   },
+          //   baseDelay,
+          // ).to(
+          //   dot,
+          //   {
+          //     x: "+=" + (perlinAmpX * px + randomAmp * (Math.random() - 0.5)),
+          //     y: "+=" + (perlinAmpY * py + randomAmp * (Math.random() - 0.5)),
+          //     alpha: 0,
+          //     duration: 2,
+          //     ease: "expo.out",
+          //   },
+          //   ">2",
+          // );
+        }
+
+        tl.stop();
+      }
+    </script>
+  </body>
+</html>

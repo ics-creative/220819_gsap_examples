@@ -8,6 +8,8 @@
     <script src="https://pixijs.download/release/pixi.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
 
+    <script src="libs/perlin.js"></script>
+
     <style>
       body {
         margin: 0;
@@ -30,6 +32,10 @@
       init();
 
       async function init() {
+        // パーリンノイズを初期化。
+        // ※パーリンノイズはお好みのライブラリをつかってください。
+        noise.seed(Date.now());
+
         // 画像を読み込む
         const image = await new Promise((resolve) => {
           const img = document.createElement("img");
@@ -99,7 +105,8 @@
           dot.height = 1;
           dot.alpha = alpha / 255; // 元画像の透明度を適用
           container.addChild(dot);
-
+          // パーティクルにXYの算出元番号を記録
+          dot.offsetIndex = i;
           // 配列に保存
           dots.push(dot);
         }
@@ -117,21 +124,35 @@
 
         for (let i = 0; i < dots.length; i++) {
           const dot = dots[i];
-          // パーティクルの散らかり座標を算出
-          // stageW と stageH は画面幅と画面高さ
-          const randomX = stageW * (Math.random() - 0.5);
-          const randomY = stageH * (Math.random() - 0.5);
+
+          const index = dot.offsetIndex;
+
+          // XとYを正規化 (Normalize X and Y)
+          // nx は左辺を基準に 0.0〜1.0の値をとる
+          const nx = (index % lengthW) / lengthW;
+          // ny は上辺を基準に 0.0〜1.0の値をとる
+          const ny = Math.floor(index / lengthW) / lengthH;
+
+          // パーリンノイズでパーティクルの移動座標を決める。
+          // パーリンノイズだと連続性が生まれるので、波打つ表現になる。
+          // 乗算は周期と考えてもらえばOK。
+          const px = noise.perlin2(nx, ny*1.5);
+          const py = noise.perlin2(nx * 3, ny);
+
+          // const spread = 0;
+          const spread = (1 - nx) * 100 + 100;
+          const delay = nx * 0.2;
 
           tl.from(
             dot,
             {
-              x: randomX,
-              y: randomY,
+              x: stageW * px + Math.random() * spread,
+              y: stageH * py + Math.random() * spread,
               alpha: 0,
               duration: 4,
               ease: "expo.inOut",
             },
-            0, // 各トゥイーンは0秒地点を開始とする
+            delay, // 各トゥイーンは0秒地点を開始とする
           );
         }
 

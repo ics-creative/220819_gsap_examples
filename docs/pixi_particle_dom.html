@@ -5,22 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
 
-    <script src="https://pixijs.download/release/pixi.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
 
     <script src="libs/perlin.js"></script>
 
     <style>
+      html {
+        height: 100%;
+      }
       body {
         margin: 0;
         padding: 0;
+        height: 100%;
         overflow: hidden;
         background-color: black;
         color: white;
+        display: grid;
+        place-items: center;
+      }
+      #container {
+        width: 0;
+        height: 0;
+        position: relative;
+      }
+      .dot {
+        width: 1px;
+        height: 1px;
+        background-color: white;
+        position: absolute;
       }
     </style>
   </head>
   <body>
+    <div id="container"></div>
     <script>
       init();
 
@@ -35,40 +52,19 @@
           img.addEventListener("load", () => {
             resolve(img);
           });
-          img.src = "images/text_2x.png";
+          img.src = "images/text_half.png";
+          // img.src = "images/text_1x.png";
         });
-
-        // PIXIのアプリケーションを作成する
-        const app = new PIXI.Application({
-          backgroundColor: 0x000000,
-          resolution: window.devicePixelRatio,
-          resizeTo: window,
-        });
-        document.body.appendChild(app.view);
-        app.view.style.width = "100%";
-        app.view.style.height = "100%";
 
         // ドットサイズの大きさ。1は等倍。
         // 1は綺麗だけど、TLの初期化に時間を要するのでやむなく倍化で。
-        const DOT_SIZE = 2;
+        const DOT_SIZE = 1;
 
         // 画像のサイズを算出
         const imageW = image.width;
         const imageH = image.height;
         const lengthW = imageW / DOT_SIZE;
         const lengthH = imageH / DOT_SIZE;
-
-        // パフォーマンスのためパーティクルコンテナーを利用
-        const container = new PIXI.ParticleContainer(lengthW * lengthH, {
-          scale: true,
-          position: true,
-          alpha: true,
-        });
-        app.stage.addChild(container);
-
-        // テクスチャーを作成
-        // テクスチャーを1枚にしていることがパフォーマンスに効果絶大
-        const texture = PIXI.Texture.from(image);
 
         // 画像をメモリ上のcanvasに転写。ピクセル値を取得するため
         const canvas = document.createElement("canvas");
@@ -100,16 +96,13 @@
             continue;
           }
 
-          const texture2 = new PIXI.Texture(
-            texture,
-            new PIXI.Rectangle(x, y, DOT_SIZE, DOT_SIZE),
-          );
-          const dot = new Dot(texture2);
-          dot.anchor.set(0.5);
-          dot.x = x - imageW / 2;
-          dot.y = y - imageH / 2;
-          dot.offsetIndex = i;
-          container.addChild(dot);
+          const dot = document.createElement("div");
+          dot.classList.add("dot");
+          dot.style.left = x - imageW / 2 + "px";
+          dot.style.top = y - imageH / 2 + "px";
+          dot.style.opacity = alpha / 255;
+          dot.dataset.offsetIndex = String(i);
+          document.getElementById("container").append(dot);
 
           dots.push(dot);
         }
@@ -125,12 +118,10 @@
         for (let i = 0; i < dots.length; i++) {
           const dot = dots[i];
 
-          const index = dot.offsetIndex;
+          const index = dot.dataset.offsetIndex;
 
           // XとYを正規化 (Normalize X and Y)
-          // nx は左辺を基準に 0.0〜1.0の値をとる
           const nx = (index % lengthW) / lengthW;
-          // ny は上辺を基準に 0.0〜1.0の値をとる
           const ny = Math.floor(index / lengthW) / lengthH;
 
           // パーリンノイズでパーティクルの移動座標を決める。
@@ -140,14 +131,11 @@
           const py = noise.perlin2(nx * 3, ny * 2);
 
           // 水平方向に遅延させるけど、ちょっとばらしている。
-          const baseDelay =
-            (dot.offsetIndex % lengthW) * 0.001 + Math.random() * 0.2;
+          const baseDelay = (index % lengthW) * 0.001 + Math.random() * 0.2;
 
           const perlinAmpX = 1000 * (nx * 2 + 1);
           const perlinAmpY = 500 * (nx * 2 + 1);
           const randomAmp = 10 * (nx * 2 + 1);
-
-          const scale = Math.random() * 2 + 1;
 
           tl.from(
             dot,
@@ -155,8 +143,6 @@
               x: "-=" + (perlinAmpX * px + randomAmp * (Math.random() - 0.5)),
               y: "-=" + (perlinAmpY * py + randomAmp * (Math.random() - 0.5)),
               alpha: 0,
-              scaleX: scale,
-              scaleY: scale,
               duration: 2,
               ease: "expo.inOut",
             },
@@ -167,8 +153,6 @@
               x: "+=" + (perlinAmpX * px + randomAmp * (Math.random() - 0.5)),
               y: "+=" + (perlinAmpY * py + randomAmp * (Math.random() - 0.5)),
               alpha: 0,
-              scaleX: scale,
-              scaleY: scale,
               duration: 2,
               ease: "expo.out",
             },
@@ -176,43 +160,7 @@
           );
         }
 
-        tl.fromTo(
-          container.scale,
-          { x: 0.4, y: 0.4 },
-          { x: 0.5, y: 0.5, duration: 5, ease: "none" },
-          0,
-        );
-
-        const resize = () => {
-          // コンテナーを中心に移動
-          container.x = app.screen.width / 2;
-          container.y = app.screen.height / 2;
-        };
-        window.addEventListener("resize", resize);
-        resize();
-      }
-
-      /**
-       * パーティクルクラス。
-       * scaleXとscaleYを制御したいためだけに用意したクラスです。
-       */
-      class Dot extends PIXI.Sprite {
-        constructor(texture) {
-          super(texture);
-        }
-        get scaleX() {
-          return this.scale.x;
-        }
-        set scaleX(value) {
-          this.scale.x = value;
-        }
-        get scaleY() {
-          return this.scale.y;
-        }
-        set scaleY(value) {
-          this.scale.y = value;
-        }
-        offsetIndex = -1;
+        tl.stop();
       }
     </script>
   </body>
