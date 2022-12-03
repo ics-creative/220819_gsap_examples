@@ -21,6 +21,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
+        image-rendering: pixelated; /* アンチエイリアスを無効化 */
       }
     </style>
   </head>
@@ -127,7 +128,6 @@
             {
               x: randomX,
               y: randomY,
-              alpha: 0,
               duration: 4,
               ease: "expo.inOut",
             },
@@ -136,7 +136,7 @@
         }
 
         // 待機時間を設ける
-        tl.add(() => {}, "+=1");
+        tl.add(() => {}, "+=0.5");
 
         const resize = () => {
           // コンテナーを中心に移動
