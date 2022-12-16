@@ -45,14 +45,9 @@
         noise.seed(Date.now());
 
         // 画像を読み込む
-        const image = await new Promise((resolve) => {
-          const img = document.createElement("img");
-          img.addEventListener("load", () => {
-            resolve(img);
-          });
-          // img.src = "images/text_half.png";
-          img.src = "images/text_1x.png";
-        });
+        const image = new Image();
+        image.src = "images/text_half.png";
+        await image.decode();
 
         // ドットサイズの大きさ。1は等倍。
         // 1は綺麗だけど、TLの初期化に時間を要するのでやむなく倍化で。

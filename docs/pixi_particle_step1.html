@@ -32,13 +32,9 @@
 
       async function init() {
         // 画像を読み込む
-        const image = await new Promise((resolve) => {
-          const img = document.createElement("img");
-          img.addEventListener("load", () => {
-            resolve(img);
-          });
-          img.src = "images/text_1x.png";
-        });
+        const image = new Image();
+        image.src = "images/text_1x.png";
+        await image.decode();
 
         // 画像のサイズを算出
         const imageW = image.width;

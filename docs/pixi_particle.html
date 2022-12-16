@@ -30,13 +30,9 @@
         noise.seed(Date.now());
 
         // 画像を読み込む
-        const image = await new Promise((resolve) => {
-          const img = document.createElement("img");
-          img.addEventListener("load", () => {
-            resolve(img);
-          });
-          img.src = "images/text_2x.png";
-        });
+        const image = new Image();
+        image.src = "images/text_2x.png";
+        await image.decode();
 
         // PIXIのアプリケーションを作成する
         const app = new PIXI.Application({
