@@ -136,10 +136,8 @@
           const px = noise.perlin2(nx, ny * 1.5);
           const py = noise.perlin2(nx * 3, ny);
 
-          // const spread = 0;
           const spread = (1 - nx) * 100 + 100;
-          const delay = nx * 0.5;
-          // const delay = 0;
+          const delay = nx * 1;
 
           tl.from(
             dot,
