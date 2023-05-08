@@ -33,12 +33,15 @@
 
       <button @click="copy">copy</button>
     </div>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3.2.47/dist/vue.esm-browser.js"
+        }
+      }
+    </script>
     <script type="module">
-      import {
-        ref,
-        createApp,
-        computed,
-      } from "https://unpkg.com/vue@3.2.4/dist/vue.esm-browser.js";
+      import { ref, createApp, computed } from "vue";
 
       const app = createApp({
         /* Vue.jsの各種処理 */
