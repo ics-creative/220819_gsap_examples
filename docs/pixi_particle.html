@@ -18,9 +18,16 @@
         background-color: black;
         color: white;
       }
+      .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     </style>
   </head>
   <body>
+    <p class="loading">Loading...</p>
     <script>
       init();
 
@@ -186,6 +193,9 @@
         };
         window.addEventListener("resize", resize);
         resize();
+
+        // ローディングを非表示にする
+        document.querySelector(".loading").hidden = true;
       }
 
       /**
