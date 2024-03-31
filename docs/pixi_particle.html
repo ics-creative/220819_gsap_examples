@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
 
-    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
     <script src="libs/perlin.js"></script>
@@ -17,12 +17,18 @@
         overflow: hidden;
         background-color: black;
         color: white;
+        font-family: sans-serif;
       }
       .loading {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+      }
+      .myCanvas {
+        width: 100%;
+        height: 100%;
+        position: absolute;
       }
     </style>
   </head>
@@ -42,15 +48,17 @@
         await image.decode();
 
         // PIXIのアプリケーションを作成する
-        const app = new PIXI.Application({
-          backgroundColor: 0x000000,
-          resolution: window.devicePixelRatio,
+        const app = new PIXI.Application();
+
+        await app.init({
+          antialias: true,
           resizeTo: window,
+          backgroundColor: 0x000000,
+          resolution: devicePixelRatio,
         });
 
-        document.body.appendChild(app.view);
-        app.view.style.width = "100%";
-        app.view.style.height = "100%";
+        app.canvas.classList.add("myCanvas");
+        document.body.appendChild(app.canvas);
 
         // ドットサイズの大きさ。1は等倍。
         // 1は綺麗だけど、TLの初期化に時間を要するのでやむなく倍化で。
@@ -63,11 +71,7 @@
         const lengthH = imageH / DOT_SIZE;
 
         // パフォーマンスのためパーティクルコンテナーを利用
-        const container = new PIXI.ParticleContainer(lengthW * lengthH, {
-          scale: true,
-          position: true,
-          alpha: true,
-        });
+        const container = new PIXI.Container();
         app.stage.addChild(container);
 
         // テクスチャーを作成
@@ -104,10 +108,10 @@
             continue;
           }
 
-          const texture2 = new PIXI.Texture(
-            texture,
-            new PIXI.Rectangle(x, y, DOT_SIZE, DOT_SIZE),
-          );
+          const texture2 = new PIXI.Texture({
+            source: texture,
+            frame: new PIXI.Rectangle(x, y, DOT_SIZE, DOT_SIZE),
+          });
           const dot = new Dot(texture2);
           dot.anchor.set(0.5);
           dot.x = x - imageW / 2;
