@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=1024" />
     <meta name="color-scheme" content="dark" />
 
-    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
     <script src="libs/perlin.js"></script>
@@ -19,16 +19,12 @@
         color: white;
       }
 
-      #myCanvas {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+      .myCanvas {
         image-rendering: pixelated; /* アンチエイリアスを無効化 */
       }
     </style>
   </head>
   <body>
-    <canvas id="myCanvas"></canvas>
     <script>
       init();
 
@@ -61,11 +57,15 @@
         // ----------------------------------------------
 
         // PIXIのアプリケーションを作成する
-        const app = new PIXI.Application({
-          resolution: window.devicePixelRatio,
+        const app = new PIXI.Application();
+
+        await app.init({
+          backgroundColor: 0x000000,
           resizeTo: window,
-          view: document.querySelector("#myCanvas"),
         });
+
+        app.canvas.classList.add("myCanvas");
+        document.body.appendChild(app.canvas);
 
         // コンテナーを利用
         const container = new PIXI.Container();
@@ -163,14 +163,6 @@
         window.addEventListener("resize", resize);
         resize();
       }
-
-      const rate = 1000 / 60;
-
-      const element = document.querySelector(".foo");
-      setTimeout(() => {
-        // 経過処理（略）
-        element.style.opacity = rate;
-      }, 33);
     </script>
   </body>
 </html>

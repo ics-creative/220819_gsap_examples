@@ -6,7 +6,7 @@
   },
   "devDependencies": {
     "prettier": "3.2.5",
-    "pixi.js": "7.4.2"
+    "pixi.js": "8.0.4"
   },
   "license": "MIT"
 }
