@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
 
-    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
 
     <script src="libs/perlin.js"></script>
@@ -47,6 +47,7 @@
           resolution: window.devicePixelRatio,
           resizeTo: window,
         });
+
         document.body.appendChild(app.view);
         app.view.style.width = "100%";
         app.view.style.height = "100%";
